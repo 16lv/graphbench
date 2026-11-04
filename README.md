@@ -1,5 +1,7 @@
 # Java Algorithms & Data Structures Laboratory
 
+![CI Status](https://github.com/16lv/java-algorithms-lab/actions/workflows/ci.yml/badge.svg)
+
 A structured **Java 21** library and empirical benchmark suite covering core data structures, graph algorithms, order statistics, and space-optimized dynamic programming, verified with **JUnit 5**.
 
 ## Overview

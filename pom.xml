@@ -6,7 +6,7 @@
 
     <groupId>agency.shss7</groupId>
     <artifactId>java-algorithms-lab</artifactId>
-    <version>1.0.0</version>
+    <version>1.2.0</version>
     <name>java-algorithms-lab</name>
     <description>Structured Java 21 algorithms and data structures library with JUnit 5 verification and benchmark harness</description>
 
