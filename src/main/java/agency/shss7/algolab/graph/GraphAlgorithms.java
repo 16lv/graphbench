@@ -5,14 +5,7 @@ import agency.shss7.algolab.structures.IndexedMinHeap;
 
 import java.util.*;
 
-/**
- * Graph representation and traversal algorithms:
- * - Breadth-First Search (BFS) traversal and unweighted shortest hop count
- * - Depth-First Search (DFS) iterative and post-order traversal
- * - Dijkstra's weighted shortest path using an indexed min-heap
- * - Kahn's topological sort with cycle detection
- * - Kruskal's minimum spanning tree using Union-Find
- */
+// Graph search and shortest-path algorithms (BFS, DFS, Dijkstra, Topological Sort, Kruskal MST).
 public final class GraphAlgorithms {
 
     public record Edge<V>(V from, V to, double weight) {
@@ -90,6 +83,7 @@ public final class GraphAlgorithms {
     ) {
         Map<V, Double> dist = new HashMap<>();
         Map<V, V> prev = new HashMap<>();
+        // Using our own IndexedMinHeap since java.util.PriorityQueue doesn't support decreaseKey
         IndexedMinHeap<V> pq = new IndexedMinHeap<>();
 
         dist.put(source, 0.0);
