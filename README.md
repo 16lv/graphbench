@@ -1,30 +1,49 @@
-﻿# GraphBench
+# GraphBench
 
 ![CI Status](https://github.com/16lv/graphbench/actions/workflows/ci.yml/badge.svg)
 
-A structured **Java 21** library and empirical benchmark suite covering core data structures, graph algorithms, order statistics, and space-optimized dynamic programming, verified with **JUnit 5**.
+**GraphBench** is a **Java 21** library and empirical benchmark suite covering generic data structures, graph algorithms, order statistics, and space-optimised dynamic programming, verified with **JUnit 5**.
 
-## Overview
+## Why I Built It
 
-Rather than storing isolated single-file university exercises, `java-algorithms-lab` organizes reusable generic data structures and algorithms into a clean Maven package hierarchy with explicit time/space complexity trade-offs and a CLI benchmark harness.
+Rather than leaving Data Structures and Algorithms coursework as disconnected single-file exercises, I built GraphBench to organise generic implementations into a clean Maven package structure and verify how theoretical time/space complexity translates to actual JVM execution times after JIT warmup.
 
 ## Modules & Complexity Analysis
 
-| Component | Package | Time Complexity | Space Complexity | Design Notes |
+| Component | Package | Time Complexity | Space Complexity | Implementation Notes |
 | :--- | :--- | :--- | :--- | :--- |
-| `LruCache<K, V>` | `structures` | $O(1)$ `get` / `put` | $O(C)$ capacity | Hash map paired with sentinel-bounded doubly-linked nodes for branch-light eviction. |
-| `IndexedMinHeap<K>` | `structures` | $O(\log V)$ `insertOrDecreaseKey` / `pollMin` | $O(V)$ | Maintains an inverse key-to-heap-index map so Dijkstra avoids duplicate stale entries. |
+| `LruCache<K, V>` | `structures` | $O(1)$ `get` / `put` | $O(C)$ capacity | `HashMap` paired with sentinel-bounded doubly-linked nodes for branch-free eviction. |
+| `IndexedMinHeap<K>` | `structures` | $O(\log V)$ `insertOrDecreaseKey` / `pollMin` | $O(V)$ | Maintains an inverse key-to-heap-index map so Dijkstra updates priorities in-place instead of pushing stale duplicates. |
 | `DisjointSetUnion` | `structures` | $O(\alpha(N))$ `find` / `union` | $O(N)$ | Iterative path compression combined with union-by-rank. |
-| `GraphAlgorithms` | `graph` | Dijkstra: $O((V + E)\log V)$<br>Kahn Toposort: $O(V + E)$<br>Kruskal MST: $O(E \log E)$ | $O(V)$ | Uses `IndexedMinHeap` for shortest-path relaxation and `DisjointSetUnion` for MST cycle checks. |
-| `SortingAndSelection` | `sorting` | Bottom-Up MergeSort: $O(N \log N)$<br>QuickSelect: $O(N)$ average | MergeSort: $O(N)$<br>QuickSelect: $O(1)$ aux | Iterative bottom-up merge avoids recursion stack frames; Hoare partition for $k$-th order statistic. |
-| `DynamicProgramming` | `dp` | Levenshtein: $O(N \cdot M)$<br>0/1 Knapsack: $O(N \cdot W)$ | Levenshtein: $O(\min(N, M))$<br>Knapsack: $O(W)$ | Uses 1D rolling arrays instead of full 2D matrices to reduce heap pressure. |
+| `GraphAlgorithms` | `graph` | Dijkstra: $O((V + E)\log V)$<br>Kahn Toposort: $O(V + E)$<br>Kruskal MST: $O(E \log E)$ | $O(V)$ | Uses `IndexedMinHeap` for shortest-path relaxation and `DisjointSetUnion` for MST cycle detection. |
+| `SortingAndSelection` | `sorting` | Bottom-Up MergeSort: $O(N \log N)$<br>QuickSelect: $O(N)$ average | MergeSort: $O(N)$<br>QuickSelect: $O(1)$ aux | Iterative bottom-up merge avoids recursion stack frames; Hoare partition finds the $k$-th order statistic in-place. |
+| `DynamicProgramming` | `dp` | Levenshtein: $O(N \cdot M)$<br>0/1 Knapsack: $O(N \cdot W)$ | Levenshtein: $O(\min(N, M))$<br>Knapsack: $O(W)$ | Uses 1D rolling arrays instead of full 2D tables to reduce heap allocations. |
 
-## Prerequisites
+## Project Structure
 
-- **Java 21** (Eclipse Temurin or OpenJDK 21)
-- **Maven 3.9+**
+```text
+graphbench/
+├── pom.xml
+└── src/
+    ├── main/java/agency/shss7/algolab/
+    │   ├── benchmark/BenchmarkRunner.java
+    │   ├── dp/DynamicProgramming.java
+    │   ├── graph/GraphAlgorithms.java
+    │   ├── sorting/SortingAndSelection.java
+    │   └── structures/
+    │       ├── DisjointSetUnion.java
+    │       ├── IndexedMinHeap.java
+    │       └── LruCache.java
+    └── test/java/agency/shss7/algolab/
+        └── AlgorithmLaboratoryTest.java
+```
 
 ## Running Tests & Benchmarks
+
+### Prerequisites
+
+- **Java 21** (OpenJDK 21 / Eclipse Temurin)
+- **Maven 3.9+**
 
 ### Run the JUnit 5 Test Suite
 
@@ -43,7 +62,7 @@ Example output:
 
 ```text
 ====================================================================
- java-algorithms-lab Â· Empirical Complexity Benchmark Suite (Java 21)
+ GraphBench · Empirical Complexity Benchmark Suite (Java 21)
 ====================================================================
 Algorithm / Operation        | Input Size   | Elapsed (ms)  
 --------------------------------------------------------------------
@@ -57,3 +76,6 @@ LRU Cache Put+Get O(1)       | 200000       |     14.310 ms
 ====================================================================
 ```
 
+## Known Limitations & Future Improvements
+
+- `BenchmarkRunner` uses `System.nanoTime()` after manual warmup loops to keep the repository dependency-free; migrating the harness to JMH (Java Microbenchmark Harness) would provide stronger isolation against dead-code elimination and GC pauses.
