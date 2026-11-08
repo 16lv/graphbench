@@ -1,6 +1,6 @@
-# Java Algorithms & Data Structures Laboratory
+﻿# GraphBench
 
-![CI Status](https://github.com/16lv/java-algorithms-lab/actions/workflows/ci.yml/badge.svg)
+![CI Status](https://github.com/16lv/graphbench/actions/workflows/ci.yml/badge.svg)
 
 A structured **Java 21** library and empirical benchmark suite covering core data structures, graph algorithms, order statistics, and space-optimized dynamic programming, verified with **JUnit 5**.
 
@@ -43,7 +43,7 @@ Example output:
 
 ```text
 ====================================================================
- java-algorithms-lab · Empirical Complexity Benchmark Suite (Java 21)
+ java-algorithms-lab Â· Empirical Complexity Benchmark Suite (Java 21)
 ====================================================================
 Algorithm / Operation        | Input Size   | Elapsed (ms)  
 --------------------------------------------------------------------
@@ -56,3 +56,4 @@ Hoare QuickSelect Median O(N)| 200000       |      3.920 ms
 LRU Cache Put+Get O(1)       | 200000       |     14.310 ms
 ====================================================================
 ```
+
