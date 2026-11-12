@@ -1,12 +1,12 @@
-# GraphBench
+# Java Graph Algorithms (java-graph-algorithms)
 
-![CI Status](https://github.com/16lv/graphbench/actions/workflows/ci.yml/badge.svg)
+![CI Status](https://github.com/16lv/java-graph-algorithms/actions/workflows/ci.yml/badge.svg)
 
-**GraphBench** is a **Java 21** library and empirical benchmark suite covering generic data structures, graph algorithms, order statistics, and space-optimised dynamic programming, verified with **JUnit 5**.
+**Java Graph Algorithms** ($(System.Collections.Hashtable.newRepo)) is a **Java 21** library and empirical benchmark suite covering generic data structures, graph algorithms, order statistics, and space-optimised dynamic programming, verified with **JUnit 5**.
 
 ## Why I Built It
 
-Rather than leaving Data Structures and Algorithms coursework as disconnected single-file exercises, I built GraphBench to organise generic implementations into a clean Maven package structure and verify how theoretical time/space complexity translates to actual JVM execution times after JIT warmup.
+Rather than leaving Data Structures and Algorithms coursework as disconnected single-file exercises, I built Java Graph Algorithms to organise generic implementations into a clean Maven package structure and verify how theoretical time/space complexity translates to actual JVM execution times after JIT warmup.
 
 ## Modules & Complexity Analysis
 
@@ -62,7 +62,7 @@ Example output:
 
 ```text
 ====================================================================
- GraphBench · Empirical Complexity Benchmark Suite (Java 21)
+ Java Graph Algorithms · Empirical Complexity Benchmark Suite (Java 21)
 ====================================================================
 Algorithm / Operation        | Input Size   | Elapsed (ms)  
 --------------------------------------------------------------------
