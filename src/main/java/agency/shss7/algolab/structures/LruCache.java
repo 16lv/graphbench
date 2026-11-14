@@ -7,6 +7,7 @@ import java.util.Optional;
 /**
  * Deterministic O(1) Least Recently Used (LRU) cache backed by a hash map and
  * an intrusive doubly-linked list of sentinel-bounded nodes.
+ * Not thread-safe; external synchronisation is required for concurrent access.
  */
 public class LruCache<K, V> {
 
@@ -68,6 +69,19 @@ public class LruCache<K, V> {
         Node<K, V> fresh = new Node<>(key, value);
         attachAfterHead(fresh);
         index.put(key, fresh);
+    }
+
+    public boolean containsKey(K key) {
+        return key != null && index.containsKey(key);
+    }
+
+    public boolean remove(K key) {
+        Node<K, V> existing = key != null ? index.remove(key) : null;
+        if (existing == null) {
+            return false;
+        }
+        detach(existing);
+        return true;
     }
 
     public int size() {

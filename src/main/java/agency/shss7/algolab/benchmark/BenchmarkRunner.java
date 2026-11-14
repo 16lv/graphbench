@@ -14,7 +14,7 @@ public final class BenchmarkRunner {
 
     public static void main(String[] args) {
         System.out.println("====================================================================");
-        System.out.println(" GraphBench · Empirical Complexity Benchmark Suite (Java 21)");
+        System.out.println(" Java Graph Algorithms · Benchmark Suite (Java 21)");
         System.out.println("====================================================================");
 
         Random rng = new Random(42L);

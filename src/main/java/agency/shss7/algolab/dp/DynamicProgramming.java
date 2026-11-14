@@ -12,6 +12,9 @@ public final class DynamicProgramming {
      * Wagner-Fischer Levenshtein edit distance using O(min(N, M)) auxiliary space.
      */
     public static int levenshteinDistance(String source, String target) {
+        if (source == null || target == null) {
+            throw new IllegalArgumentException("Source and target strings must not be null");
+        }
         if (source.equals(target)) {
             return 0;
         }
@@ -47,13 +50,16 @@ public final class DynamicProgramming {
      * 0/1 Knapsack solver using a 1D rolling DP table in O(N * W) time and O(W) space.
      */
     public static int knapsack01(int[] weights, int[] values, int capacity) {
-        if (weights.length != values.length || capacity < 0) {
+        if (weights == null || values == null || weights.length != values.length || capacity < 0) {
             throw new IllegalArgumentException("Invalid weights/values or negative capacity");
         }
         int[] dp = new int[capacity + 1];
         for (int i = 0; i < weights.length; i++) {
             int w = weights[i];
             int v = values[i];
+            if (w < 0) {
+                throw new IllegalArgumentException("Item weight cannot be negative: " + w);
+            }
             for (int cap = capacity; cap >= w; cap--) {
                 dp[cap] = Math.max(dp[cap], dp[cap - w] + v);
             }

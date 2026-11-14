@@ -25,8 +25,8 @@ public final class GraphAlgorithms {
      * Breadth-First Search (BFS) traversal from a starting vertex in O(V + E) time.
      */
     public static <V> List<V> breadthFirstSearch(Map<V, List<V>> adjacency, V start) {
-        if (start == null) {
-            throw new IllegalArgumentException("Start vertex must not be null");
+        if (adjacency == null || start == null) {
+            throw new IllegalArgumentException("Adjacency map and start vertex must not be null");
         }
         List<V> order = new ArrayList<>();
         Set<V> visited = new LinkedHashSet<>();
@@ -51,8 +51,8 @@ public final class GraphAlgorithms {
      * Depth-First Search (DFS) traversal from a starting vertex in O(V + E) time.
      */
     public static <V> List<V> depthFirstSearch(Map<V, List<V>> adjacency, V start) {
-        if (start == null) {
-            throw new IllegalArgumentException("Start vertex must not be null");
+        if (adjacency == null || start == null) {
+            throw new IllegalArgumentException("Adjacency map and start vertex must not be null");
         }
         List<V> order = new ArrayList<>();
         Set<V> visited = new HashSet<>();
@@ -81,9 +81,14 @@ public final class GraphAlgorithms {
         V source,
         V target
     ) {
+        if (adjacency == null || source == null || target == null) {
+            throw new IllegalArgumentException("Adjacency map, source, and target must not be null");
+        }
+        if (!adjacency.containsKey(source)) {
+            throw new IllegalArgumentException("Source vertex is missing from adjacency map: " + source);
+        }
         Map<V, Double> dist = new HashMap<>();
         Map<V, V> prev = new HashMap<>();
-        // Using our own IndexedMinHeap since java.util.PriorityQueue doesn't support decreaseKey
         IndexedMinHeap<V> pq = new IndexedMinHeap<>();
 
         dist.put(source, 0.0);
@@ -113,6 +118,9 @@ public final class GraphAlgorithms {
     }
 
     public static <V> List<V> topologicalSort(Map<V, List<V>> dag) {
+        if (dag == null) {
+            throw new IllegalArgumentException("Adjacency map must not be null");
+        }
         Map<V, Integer> inDegree = new LinkedHashMap<>();
         for (var entry : dag.entrySet()) {
             inDegree.putIfAbsent(entry.getKey(), 0);
@@ -147,6 +155,23 @@ public final class GraphAlgorithms {
     }
 
     public static List<Edge<Integer>> kruskalMinimumSpanningTree(int vertexCount, List<Edge<Integer>> edges) {
+        if (vertexCount <= 0) {
+            throw new IllegalArgumentException("Vertex count must be positive: " + vertexCount);
+        }
+        if (edges == null) {
+            throw new IllegalArgumentException("Edge list must not be null");
+        }
+        for (Edge<Integer> edge : edges) {
+            if (edge == null || edge.from() == null || edge.to() == null) {
+                throw new IllegalArgumentException("Edge and its endpoints must not be null");
+            }
+            if (edge.from() < 0 || edge.from() >= vertexCount || edge.to() < 0 || edge.to() >= vertexCount) {
+                throw new IllegalArgumentException(
+                    "Edge endpoint out of bounds [0, " + vertexCount + "): " + edge
+                );
+            }
+        }
+
         List<Edge<Integer>> sorted = new ArrayList<>(edges);
         sorted.sort(Comparator.comparingDouble(Edge::weight));
 

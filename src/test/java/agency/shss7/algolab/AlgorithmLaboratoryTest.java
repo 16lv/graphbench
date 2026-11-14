@@ -149,5 +149,27 @@ class AlgorithmLaboratoryTest {
         int[] weights = {2, 3, 4, 5};
         int[] values = {3, 4, 5, 8};
         assertEquals(11, DynamicProgramming.knapsack01(weights, values, 7));
+        assertThrows(IllegalArgumentException.class, () -> DynamicProgramming.knapsack01(new int[]{-1}, new int[]{5}, 3));
+    }
+
+    @Test
+    void lruCacheRemovalAndGraphBoundaryValidationBehaveCorrectly() {
+        LruCache<String, Integer> cache = new LruCache<>(2);
+        cache.put("x", 10);
+        assertTrue(cache.containsKey("x"));
+        assertTrue(cache.remove("x"));
+        assertFalse(cache.containsKey("x"));
+        assertEquals(0, cache.size());
+
+        Map<String, List<Edge<String>>> disconnected = Map.of("S", List.of(), "T", List.of());
+        var unreachable = GraphAlgorithms.dijkstra(disconnected, "S", "T");
+        assertEquals(Double.POSITIVE_INFINITY, unreachable.totalDistance());
+        assertTrue(unreachable.path().isEmpty());
+
+        assertThrows(IllegalArgumentException.class, () -> GraphAlgorithms.dijkstra(disconnected, "MISSING", "T"));
+        assertThrows(
+            IllegalArgumentException.class,
+            () -> GraphAlgorithms.kruskalMinimumSpanningTree(3, List.of(new Edge<>(0, 5, 1.0)))
+        );
     }
 }
